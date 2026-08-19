@@ -24,4 +24,4 @@ jobs:
         run: python --version
 
       - name: Uruchom program
-        run: python "zadania domowe lesson38/ad_2_hello.py"
+        run: python ad_2_hello.py"
