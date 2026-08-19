@@ -1,14 +1,14 @@
 """
-Workflow z Pythonem.
+Zadanie 2 - Workflow z Pythonem.
 Prosty program uruchamiany przez GitHub Actions
-w środowisku Python 3.11.
+w Ĺ›rodowisku Python 3.11.
 """
 
 
 def hello():
-    """Wyświetla komunikat potwierdzający poprawne działanie programu."""
+    """WyĹ›wietla komunikat potwierdzajÄ…cy poprawne dziaĹ‚anie programu."""
     print("Hello from Python 3.11!")
 
 
 if __name__ == "__main__":
-    hello() 
+    hello()
