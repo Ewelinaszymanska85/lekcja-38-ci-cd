@@ -13,6 +13,9 @@ permissions:
   contents: read
   packages: write
 
+env:
+  IMAGE_NAME: ghcr.io/ewelinaszymanska85/lekcja38-app:latest
+
 jobs:
   docker:
     runs-on: ubuntu-latest
@@ -29,13 +32,10 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Zbuduj Docker image
-        run: |
-          docker build -t ghcr.io/${{ github.repository_owner }}/lekcja38-app:latest .
+        run: docker build -t $IMAGE_NAME .
 
       - name: Uruchom testy w kontenerze
-        run: |
-          docker run --rm ghcr.io/${{ github.repository_owner }}/lekcja38-app:latest pytest tests/ -v
+        run: docker run --rm $IMAGE_NAME pytest tests/ -v
 
       - name: Wyslij image do GHCR
-        run: |
-          docker push ghcr.io/${{ github.repository_owner }}/lekcja38-app:latest
+        run: docker push $IMAGE_NAME
