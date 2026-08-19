@@ -1,6 +1,6 @@
 # Scheduled Workflow
-# Uruchamia security scan codziennie o 3:00 UTC
-# oraz pozwala uruchomić go ręcznie.
+# Codzienny security scan zaleznosci oraz tworzenie GitHub Issue,
+# jesli pip-audit wykryje podatnosci.
 
 name: Zadanie 17 - Security Scan
 
@@ -9,6 +9,10 @@ on:
     - cron: "0 3 * * *"
 
   workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
 
 jobs:
   security-scan:
@@ -29,5 +33,19 @@ jobs:
           pip install pip-audit
 
       - name: Uruchom security scan
+        id: audit
+        continue-on-error: true
         run: |
-          pip-audit -r requirements.txt
+          pip-audit -r requirements.txt > security-report.txt 2>&1
+
+      - name: Pokaz raport
+        if: always()
+        run: cat security-report.txt
+
+      - name: Utworz GitHub Issue
+        if: steps.audit.outcome == 'failure'
+        uses: peter-evans/create-issue-from-file@v5
+        with:
+          title: "Security alert - wykryto podatnosci"
+          content-filepath: security-report.txt
+          labels: security
